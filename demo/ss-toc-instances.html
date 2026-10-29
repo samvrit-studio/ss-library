@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ss-toc instances demo</title>
+    <style>
+      /* Basic page reset */
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: system-ui, sans-serif; line-height: 1.6; color: #1a1a1a; }
+
+      /* Fake sticky navbar — 80px tall, matching ss-toc-offset="80" */
+      .navbar {
+        position: sticky; top: 0; z-index: 10; height: 80px;
+        display: flex; align-items: center; padding: 0 24px;
+        background: #111; color: #fff;
+      }
+
+      /* Each block is a two-column section: TOC + content */
+      .block {
+        display: grid; grid-template-columns: 240px 1fr; gap: 48px;
+        max-width: 1100px; margin: 0 auto; padding: 48px 24px;
+      }
+      .block + .block { border-top: 4px solid #4f46e5; }
+      .block_label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #4f46e5; }
+
+      /* Sidebar sticks below the navbar, but only within its own block */
+      .toc { position: sticky; top: 104px; align-self: start; }
+      .toc_title { font-weight: 600; margin-bottom: 12px; }
+      .toc_list { display: flex; flex-direction: column; gap: 4px; }
+
+      /* Generated links + active state */
+      .toc_link {
+        display: block; padding: 4px 12px; border-left: 2px solid #ddd;
+        color: #666; text-decoration: none; font-size: 14px;
+      }
+      .toc_link.is-active { color: #111; border-left-color: #4f46e5; font-weight: 600; }
+
+      /* Tall sections so scrolling is testable */
+      .spacer { height: 350px; background: #f4f4f5; border-radius: 8px; margin-bottom: 16px; }
+      .footer { padding: 120px 24px; background: #111; color: #aaa; text-align: center; }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">Navbar (80px)</div>
+
+    <!-- ===== Instance "guide": hash updates ON (default) ===== -->
+    <section class="block">
+      <aside class="toc" ss-toc="wrapper" ss-toc-instance="guide">
+        <div class="toc_title">Guide</div>
+        <div class="toc_list" ss-toc="list" ss-toc-instance="guide" ss-toc-offset="80">
+          <!-- Template for this instance only -->
+          <a href="#" class="toc_link" ss-toc="link">Link</a>
+        </div>
+      </aside>
+
+      <article ss-toc="content" ss-toc-instance="guide">
+        <div class="block_label">Instance: guide · URL hash updates on click</div>
+        <h2>Guide: intro</h2>
+        <div class="spacer"></div>
+        <h2>Guide: setup</h2>
+        <div class="spacer"></div>
+        <h2>Guide: finishing up</h2>
+        <div class="spacer"></div>
+      </article>
+    </section>
+
+    <!-- ===== Instance "faq": hash updates OFF ===== -->
+    <section class="block">
+      <aside class="toc" ss-toc="wrapper" ss-toc-instance="faq">
+        <div class="toc_title">FAQ</div>
+        <!-- ss-toc-hash="false": clicking a link should NOT change the address bar -->
+        <div class="toc_list" ss-toc="list" ss-toc-instance="faq" ss-toc-offset="80" ss-toc-hash="false">
+          <a href="#" class="toc_link" ss-toc="link">Link</a>
+        </div>
+      </aside>
+
+      <article ss-toc="content" ss-toc-instance="faq">
+        <div class="block_label">Instance: faq · URL hash stays unchanged</div>
+        <h2>FAQ: pricing</h2>
+        <div class="spacer"></div>
+        <h2>FAQ: support</h2>
+        <div class="spacer"></div>
+        <!-- Same text as a guide heading → second one becomes "guide-setup-2", no id clash -->
+        <h2>Guide: setup</h2>
+        <div class="spacer"></div>
+      </article>
+    </section>
+
+    <!-- ===== Instance "empty": no headings → this whole TOC should be hidden ===== -->
+    <section class="block">
+      <aside class="toc" ss-toc="wrapper" ss-toc-instance="empty">
+        <div class="toc_title">You should NOT see this title</div>
+        <div class="toc_list" ss-toc="list" ss-toc-instance="empty">
+          <a href="#" class="toc_link" ss-toc="link">Link</a>
+        </div>
+      </aside>
+      <article ss-toc="content" ss-toc-instance="empty">
+        <div class="block_label">Instance: empty · no headings, TOC hidden</div>
+        <p>This block has no headings, so its sidebar should be gone.</p>
+      </article>
+    </section>
+
+    <div class="footer">Footer</div>
+
+    <!-- Local copy while testing; swap for the jsDelivr URL in Webflow -->
+    <script defer src="../src/ss-toc.js"></script>
+  </body>
+</html>

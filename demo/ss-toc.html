@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ss-toc demo</title>
+    <style>
+      /* Basic page reset */
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: system-ui, sans-serif; line-height: 1.6; color: #1a1a1a; }
+
+      /* Fake sticky navbar — 80px tall, matching ss-toc-offset="80" below */
+      .navbar {
+        position: sticky; top: 0; z-index: 10; height: 80px;
+        display: flex; align-items: center; padding: 0 24px;
+        background: #111; color: #fff;
+      }
+
+      /* Two-column layout: TOC sidebar + article */
+      .layout {
+        display: grid; grid-template-columns: 240px 1fr; gap: 48px;
+        max-width: 1100px; margin: 0 auto; padding: 48px 24px;
+      }
+
+      /* Sidebar sticks below the navbar */
+      .toc { position: sticky; top: 104px; align-self: start; }
+      .toc_title { font-weight: 600; margin-bottom: 12px; }
+      .toc_list { display: flex; flex-direction: column; gap: 4px; }
+
+      /* Generated links */
+      .toc_link {
+        display: block; padding: 4px 12px; border-left: 2px solid #ddd;
+        color: #666; text-decoration: none; font-size: 14px;
+      }
+      .toc_link:hover { color: #111; }
+
+      /* Style for the H3 template (ss-toc="link-h3") */
+      .toc_link.is-sub { padding-left: 28px; font-size: 13px; }
+
+      /* Active state added by the script while scrolling */
+      .toc_link.is-active { color: #111; border-left-color: #4f46e5; font-weight: 600; }
+
+      /* Tall sections so scrolling is testable */
+      .rich-text p { margin: 0 0 16px; }
+      .rich-text h2 { margin-top: 48px; }
+      .spacer { height: 400px; background: #f4f4f5; border-radius: 8px; margin-bottom: 16px; }
+
+      .footer { padding: 120px 24px; background: #111; color: #aaa; text-align: center; }
+
+      /* Stack the columns on mobile */
+      @media (max-width: 767px) {
+        .layout { grid-template-columns: 1fr; }
+        .toc { position: static; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">Navbar (80px)</div>
+
+    <div class="layout">
+      <!-- TOC: wrapper is hidden automatically if the article has no headings -->
+      <aside class="toc" ss-toc="wrapper">
+        <div class="toc_title">On this page</div>
+        <!-- Settings can live on the list or the content element -->
+        <div class="toc_list" ss-toc="list" ss-toc-offset="80" ss-toc-headings="h2,h3">
+          <!-- Templates: cloned per heading, then removed -->
+          <a href="#" class="toc_link" ss-toc="link">Link</a>
+          <a href="#" class="toc_link is-sub" ss-toc="link-h3">Sub link</a>
+        </div>
+      </aside>
+
+      <!-- Stands in for a Webflow Rich Text element -->
+      <article class="rich-text" ss-toc="content">
+        <h1>Demo article</h1>
+        <p>Intro paragraph. H1 is ignored because ss-toc-headings is "h2,h3".</p>
+
+        <h2>Getting started</h2>
+        <div class="spacer"></div>
+
+        <h3>Installing the script</h3>
+        <div class="spacer"></div>
+
+        <!-- Existing id should be kept as-is -->
+        <h2 id="custom-id">Heading with an existing id</h2>
+        <div class="spacer"></div>
+
+        <!-- Same text twice → overview, overview-2 -->
+        <h2>Overview</h2>
+        <div class="spacer"></div>
+        <h2>Overview</h2>
+        <div class="spacer"></div>
+
+        <!-- Non-Latin text still gets a readable id -->
+        <h2>Café &amp; Résumé — accents</h2>
+        <div class="spacer"></div>
+
+        <!-- Empty heading should be skipped -->
+        <h2></h2>
+
+        <h2>Last section</h2>
+        <p>Short last section — it should still go active when you hit the bottom of the page.</p>
+      </article>
+    </div>
+
+    <div class="footer">Footer</div>
+
+    <!-- Local copy while testing; swap for the jsDelivr URL in Webflow -->
+    <script defer src="../src/ss-toc.js"></script>
+  </body>
+</html>
