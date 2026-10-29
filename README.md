@@ -1,6 +1,43 @@
 # ss-library
 
-Attribute-based solutions for Webflow by Samvrit Studio
+Attribute-based solutions for Webflow by [Samvrit Studio](https://samvritstudio.com).
+
+Add a script tag, add a few attributes in the Designer, and the feature works. No custom code to write or maintain.
+
+- **One script per feature.** Load only what a page uses, nothing else.
+- **Attributes, not code.** Everything is set with `ss-` attributes in Webflow's element settings.
+- **Built from real client work.** A script only goes in the library if it needs JavaScript and saves real time on projects.
+- **Plain, commented JavaScript.** Open the source and read exactly what it does.
+
+### Scripts
+
+| Script            | What it does                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------- |
+| [ss-toc](#ss-toc) | Table of contents from page headings, with active link highlighting and smooth scroll |
+
+### How to load a script
+
+Every script uses the same URL pattern. Paste it before `</body>` in the page or template's custom code:
+
+```html
+<!-- Replace NAME with the script name, e.g. ss-toc -->
+<script
+  defer
+  src="https://cdn.jsdelivr.net/gh/samvrit-studio/ss-library@1/src/NAME.min.js"
+></script>
+```
+
+`@1` always serves the latest `1.x` version, so sites get fixes automatically. To lock a site to an exact version, use the full version instead, e.g. `@1.0.1`.
+
+### Watch
+
+Each script gets a short walkthrough on YouTube: [@samvritstudio](https://www.youtube.com/@samvritstudio).
+
+### License
+
+MIT. Free to use on personal and client projects.
+
+---
 
 ## ss-toc
 
